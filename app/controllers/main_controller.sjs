@@ -88,6 +88,16 @@ function convert(params){
 			converted.appendString(line+"\n")
 		}
 	}
+	//Myna.include($FP.dir +"app/jsmin.sjs")
+	//minify(new Myna.File($FP.config.mpagesDir,params.id,"version.js"),compiled)
+	//minify(concatenated,compiled)
+	//concatenated.copyTo(compiled)
+	/* index.copyTo(
+		new Myna.File(
+			index.getDirectory(),
+			"index_" +new Date().format("m-d-Y_H.i.s")+".html~"
+		)
+	); */
 
 	converted.copyTo(index)
 	converted.forceDelete();
@@ -148,7 +158,7 @@ function buildDependencies(params){
 
 
 		index.appendString(line+"\n")
-		if (/^\s*<script.*ext.js/.test(line)){
+		if (/^\s*<script.*jslib.js/.test(line)){
 			index.appendString(list+"\n")
 
 		}
