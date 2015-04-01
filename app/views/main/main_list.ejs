@@ -1,0 +1,16 @@
+<%-- <%=Myna.dump(apps)%> --%>
+
+<h1>Convert you an app, yo.</h1>
+<table width="100%" height="" cellspacing="0" celpadding="0" border="0">
+	<@loop array="apps" element="f" index="i">
+	<tr>
+		<td>
+			<%=Html.link({
+				action:"convert",
+				id:f.fileName,
+				text:f.fileName
+			})%>
+		</td>
+	</tr>
+	</@loop>
+</table>
