@@ -65,13 +65,12 @@ function convert(params){
 				if (!compiledAdded){
 					converted.appendString(<ejs>
 						<script type="text/javascript" src="../env.js"></script>
-						<%--- <script type="text/javascript" src="version.js"></script> ---%>
 						<script type="text/javascript" src="compiled.js?dc=<%=Myna.createUuid()%>"></script>
 					</ejs>+"\n")
 					compiledAdded=true
 				}
 				converted.appendString(<ejs>
-					<!-- $Compiled <%=script%> on date -->
+					<!-- $Compiled <%=script%> on date XXX -->
 				</ejs>+"\n")
 				var includeFile =new Myna.File($FP.config.mpagesDir,params.projectRoot,params.id,script);
 				if (includeFile.exists()){
@@ -103,7 +102,7 @@ function convert(params){
 
 
 
-function buildDependencies(params){
+function buildDependencies(params){ // entry point from ext apps
 	var app = params.id;
 	var paths = params.paths$object;
 	//var list = params.list.split(",").map(function(className){
@@ -134,7 +133,12 @@ function buildDependencies(params){
 
 	var debug = new Myna.File($FP.config.mpagesDir,params.projectRoot,params.id,"debug.html")
 	var index = new Myna.File($FP.config.mpagesDir,params.projectRoot,params.id,"index.html")
+
+	Myna.log("debug", "debug", debug.toString());
+	Myna.log("debug", "index", index.toString());
+
 	index.writeString("");
+	var dontDoItTwice = false;
 
 	var appJsFound=false
 	for (line in debug.getLineIterator()) {
@@ -146,9 +150,12 @@ function buildDependencies(params){
 			continue
 		}
 
+		Myna.log("debug", "getLineIterator appendingString", line);
+
 
 		index.appendString(line+"\n")
-		if (/^\s*<script.*ext.js/.test(line)){
+		if (!dontDoItTwice && /^\s*<!-- compiled code here -->/.test(line)){
+			dontDoItTwice = true;
 			index.appendString(list+"\n")
 
 		}

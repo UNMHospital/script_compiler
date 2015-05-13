@@ -30,7 +30,7 @@
 			//"MyAlias":"some_other_datasource",
 
 		},
-		mpagesDir:new Myna.File("file:/opt/myna"),
+		mpagesDir:new Myna.File("file:/www/main/apps/"),
 		homeRoute:{
 			controller:"Main",
 			action:"index"
