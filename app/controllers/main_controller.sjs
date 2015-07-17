@@ -105,16 +105,16 @@ function convert(params){
 function buildDependencies(params){ // entry point from ext apps
 	var app = params.id;
 	var paths = params.paths$object;
-	//var list = params.list.split(",").map(function(className){
 	var list = $req.data.list.split(",").map(function(className){
 		var parts =className.split(".")
 		var url;
 		paths.getKeys().sort(function(a,b){
-			return String.compareNumericReverse(a.listLen("."),b.listLen("."))
+			return -(a.length - b.length);
+			// return String.compareNumericReverse(a.listLen("."),b.listLen("."))
 		})
 		.some(function(path){
 			var base = paths[path];
-			var r = new RegExp("^"+path)
+			var r = new RegExp("^"+path.replace(/\./g,"\\."))
 			if (r.test(className)){
 				url = "{0}/{1}.js".format(
 					base,
@@ -130,6 +130,9 @@ function buildDependencies(params){ // entry point from ext apps
 			//new Date().format("m/d/Y") +" at " +new Date().format("H:i:s")
 		)
 	}).join("\n")
+
+	// this.renderContent(Myna.dump(list), "plain/plain");
+
 
 	var debug = new Myna.File($FP.config.mpagesDir,params.projectRoot,params.id,"debug.html")
 	var index = new Myna.File($FP.config.mpagesDir,params.projectRoot,params.id,"index.html")
@@ -166,5 +169,5 @@ function buildDependencies(params){ // entry point from ext apps
 	index.copyTo(debug)
 
 	this.convert(params)
-	this.renderContent("{}","text/javascript")
+	// this.renderContent("{}","text/javascript")
 }
